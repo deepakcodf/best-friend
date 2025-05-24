@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>For Anshu - A Beautiful Tribute</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #f9d5e5, #fbc1cc);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      color: #444;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    header {
+      margin-top: 30px;
+      text-align: center;
+      color: #a83279;
+      text-shadow: 1px 1px 5px rgba(168, 50, 121, 0.7);
+      z-index: 20;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      font-style: italic;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #6a2a52;
+    }
+
+    .quote {
+      margin: 25px 0 40px 0;
+      font-size: 1.2rem;
+      max-width: 600px;
+      font-weight: 500;
+      color: #7d3c6f;
+      text-align: center;
+      line-height: 1.5;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 15px;
+      padding: 15px 25px;
+      box-shadow: 0 0 15px rgba(168, 50, 121, 0.2);
+      position: relative;
+      z-index: 20;
+    }
+
+    .magic-btn {
+      background: #a83279;
+      border: none;
+      color: white;
+      padding: 18px 36px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 40px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(168, 50, 121, 0.4);
+      transition: background 0.3s ease;
+      user-select: none;
+      position: relative;
+      z-index: 20;
+      overflow: hidden;
+    }
+
+    .magic-btn:hover {
+      background: #d157a6;
+    }
+
+    .images-container {
+      margin-top: 40px;
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 1s ease, transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      position: relative;
+      z-index: 20;
+    }
+
+    .images-container.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .image-box {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(168, 50, 121, 0.3);
+      max-width: 280px;
+      flex: 1 1 280px;
+      text-align: center;
+      transform-origin: center;
+      animation-fill-mode: forwards;
+      animation-duration: 1.2s;
+      animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      position: relative;
+    }
+
+    /* Animate images with a gentle pop/bounce on show */
+    .images-container.show .image-box:nth-child(1) {
+      animation-name: popInLeft;
+    }
+
+    .images-container.show .image-box:nth-child(2) {
+      animation-name: popInRight;
+    }
+
+    @keyframes popInLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-40px) scale(0.7);
+      }
+      80% {
+        transform: translateX(15px) scale(1.05);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    @keyframes popInRight {
+      0% {
+        opacity: 0;
+        transform: translateX(40px) scale(0.7);
+      }
+      80% {
+        transform: translateX(-15px) scale(1.05);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    .image-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-bottom: 3px solid #a83279;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .caption {
+      padding: 12px 15px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #a83279;
+      background: #fce4f0;
+    }
+
+    /* Fullscreen animation container for stars */
+    .magic-animations {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: visible;
+      z-index: 15;
+      user-select: none;
+    }
+
+    /* Star style for full screen */
+    .star {
+      position: absolute;
+      background: white;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      opacity: 0.8;
+      box-shadow: 0 0 8px 2px white;
+      animation-name: twinkleFloat;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+    }
+
+    /* Star sparkle for images */
+    .star-sparkle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: white;
+      box-shadow:
+        0 0 6px 2px white,
+        0 0 10px 3px #ffccff,
+        0 0 20px 5px #d46aff;
+      border-radius: 50%;
+      opacity: 0;
+      animation: sparkleScale 1.5s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 25;
+    }
+
+    /* Different timings for sparkle */
+    .star-sparkle:nth-child(1) {
+      animation-delay: 0s;
+    }
+    .star-sparkle:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+    .star-sparkle:nth-child(3) {
+      animation-delay: 1s;
+    }
+    .star-sparkle:nth-child(4) {
+      animation-delay: 1.3s;
+    }
+    .star-sparkle:nth-child(5) {
+      animation-delay: 1.7s;
+    }
+
+    @keyframes sparkleScale {
+      0%, 100% {
+        opacity: 0;
+        transform: scale(0.6);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
+
+    @keyframes twinkleFloat {
+      0%, 100% {
+        opacity: 0.8;
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        opacity: 0.3;
+        transform: translateY(-10px) scale(0.7);
+      }
+    }
+
+    /* Show sparkle effect */
+    .image-box.sparkle .star-sparkle {
+      opacity: 1;
+    }
+
+    /* Position the sparkles around corners */
+    .star-sparkle.pos1 {
+      top: 10%;
+      left: 10%;
+    }
+    .star-sparkle.pos2 {
+      top: 10%;
+      right: 10%;
+    }
+    .star-sparkle.pos3 {
+      bottom: 10%;
+      left: 15%;
+    }
+    .star-sparkle.pos4 {
+      bottom: 15%;
+      right: 15%;
+    }
+    .star-sparkle.pos5 {
+      top: 45%;
+      left: 50%;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      .magic-btn {
+        padding: 14px 28px;
+        font-size: 1rem;
+      }
+      .quote {
+        font-size: 1rem;
+        padding: 12px 18px;
+      }
+      .images-container {
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Anshu</h1>
+    <p>A shining star with a heart full of magic</p>
+  </header>
+
+  <div class="quote" id="quote" aria-live="polite" aria-atomic="true">
+    "Beauty isn’t just what you see — it’s the magic you bring to every moment."
+  </div>
+
+  <button class="magic-btn" id="magicBtn">Touch the Magic Button ✨</button>
+
+  <div class="images-container" id="imagesContainer" aria-hidden="true">
+    <div class="image-box">
+      <img src="./assets/anshu2.jpg" />
+      <div class="caption">Anshu, as graceful as a butterfly</div>
+
+      <!-- Star sparkles on image -->
+      <div class="star-sparkle pos1"></div>
+      <div class="star-sparkle pos2"></div>
+      <div class="star-sparkle pos3"></div>
+      <div class="star-sparkle pos4"></div>
+      <div class="star-sparkle pos5"></div>
+    </div>
+    <div class="image-box">
+      <img src="./assets/anshu1.jpg" />
+      <div class="caption">Anshu, calm and majestic like a deer</div>
+
+      <!-- Star sparkles on image -->
+      <div class="star-sparkle pos1"></div>
+      <div class="star-sparkle pos2"></div>
+      <div class="star-sparkle pos3"></div>
+      <div class="star-sparkle pos4"></div>
+      <div class="star-sparkle pos5"></div>
+    </div>
+  </div>
+
+  <div class="magic-animations" id="magicAnimations"></div>
+
+  <script>
+    const magicBtn = document.getElementById('magicBtn');
+    const imagesContainer = document.getElementById('imagesContainer');
+    const quote = document.getElementById('quote');
+    const magicAnimations = document.getElementById('magicAnimations');
+    const imageBoxes = document.querySelectorAll('.image-box');
+
+    const quotes = [
+      "Anshu's smile lights up the darkest skies.",
+      "Her kindness is the melody that soothes every soul.",
+      "Like a rare flower, Anshu blossoms with grace and strength.",
+      "Her beauty is timeless, but her heart is eternal.",
+      "Anshu inspires with the quiet power of her spirit."
+    ];
+
+    // Create star element with twinkle and float animation (full screen)
+    function createStar() {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.style.left = `${Math.random() * window.innerWidth}px`;
+      star.style.top = `${Math.random() * window.innerHeight}px`;
+      const size = 1 + Math.random() * 3;
+      star.style.width = `${size}px`;
+      star.style.height = `${size}px`;
+      star.style.animationDuration = `${2 + Math.random() * 3}s`;
+      star.style.animationDelay = `${Math.random() * 3}s`;
+      magicAnimations.appendChild(star);
+    }
+
+    function spawnStars() {
+      magicAnimations.innerHTML = '';
+      for(let i=0; i<80; i++) {
+        createStar();
+      }
+    }
+
+    magicBtn.addEventListener('click', () => {
+      imagesContainer.classList.add('show');
+      imagesContainer.setAttribute('aria-hidden', 'false');
+
+      // Change quote randomly
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      quote.textContent = quotes[randomIndex];
+
+      // Spawn full screen stars
+      spawnStars();
+
+      // Add sparkle effect to images
+      imageBoxes.forEach(box => {
+        box.classList.add('sparkle');
+      });
+
+      magicBtn.disabled = true;
+      magicBtn.textContent = "Magic Revealed ✨";
+    });
+  </script>
+
+</body>
+</html>
